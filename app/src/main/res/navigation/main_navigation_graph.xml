@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation_graph"
+    app:startDestination="@id/newsSourcesFragment">
+
+    <fragment
+        android:id="@+id/newsSourcesFragment"
+        android:name="com.mihahoni.topnews.ui.newsSources.NewsSourcesFragment"
+        android:label="fragment_news_sources"
+        tools:layout="@layout/fragment_news_sources" />
+    <fragment
+        android:id="@+id/newsListFragment"
+        android:name="com.mihahoni.topnews.ui.newsList.NewsListFragment"
+        android:label="fragment_news_list"
+        tools:layout="@layout/fragment_news_list" />
+</navigation>
