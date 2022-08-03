@@ -1,4 +1,10 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    dependencies {
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.38.1'
+
+    }
+}
 plugins {
     id 'com.android.application' version '7.2.1' apply false
     id 'com.android.library' version '7.2.1' apply false
@@ -7,4 +13,14 @@ plugins {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+    lifecycle_version = '2.5.1'
+    paging_version = '3.1.1'
+    apollo_version = '3.3.0'
+    nav_version = '2.5.1'
+    hilt_android_version = '2.38.1'
+    hilt_viewModel_version = '1.0.0-alpha03'
+
 }
