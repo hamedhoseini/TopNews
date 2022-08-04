@@ -10,43 +10,33 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mihahoni.topnews.R
 import com.mihahoni.topnews.databinding.FragmentNewsSourcesBinding
+import com.mihahoni.topnews.ui.base.BaseFragment
 import com.mihahoni.topnews.utils.MarginItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NewsSourcesFragment : Fragment() {
+class NewsSourcesFragment : BaseFragment<FragmentNewsSourcesBinding>() {
 
+    private lateinit var sourcesAdapter: NewsSourcesAdapter
     private val newsSourcesViewModel by viewModels<NewsSourcesViewModel>()
-    private lateinit var binding: FragmentNewsSourcesBinding
+    override fun viewLayoutId(): Int = R.layout.fragment_news_sources
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentNewsSourcesBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initNewsSourceRecycleView()
-        observe()
-    }
-
-    private fun observe() {
-        newsSourcesViewModel.getNewsSources().observe(viewLifecycleOwner) {
-            Log.i("****", it.toString())
-        }
-    }
-
-    private fun initNewsSourceRecycleView() {
-        val sourcesAdapter = NewsSourcesAdapter()
-        binding.newsSourceRecycleView.apply {
+    override fun initViews() {
+        sourcesAdapter = NewsSourcesAdapter()
+        getViewDataBinding().newsSourceRecycleView.apply {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             addItemDecoration(MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_16dp)))
             adapter = sourcesAdapter
         }
-//        sourcesAdapter.submitItems(arrayListOf("hi", "salam", "so on"))
     }
+    override fun observeViewModel() {
+
+        newsSourcesViewModel.getNewsSources().observe(viewLifecycleOwner) {
+        sourcesAdapter.submitItems(it.sourcesList)
+        }
+    }
+
+
 }

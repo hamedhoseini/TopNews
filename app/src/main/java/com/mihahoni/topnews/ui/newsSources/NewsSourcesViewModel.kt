@@ -2,7 +2,10 @@ package com.mihahoni.topnews.ui.newsSources
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import com.mihahoni.topnews.data.Result
+import com.mihahoni.topnews.data.model.NewsSourceResponse
 import com.mihahoni.topnews.data.repository.NewsRepository
+import com.mihahoni.topnews.data.succeeded
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
@@ -14,11 +17,11 @@ class NewsSourcesViewModel @Inject constructor(
 ): ViewModel()  {
 
     fun getNewsSources() = liveData(Dispatchers.IO){
-        try {
-           emit(newsRepository.getServiceFromRemote())
-        } catch (exception: Exception) {
-            emit(exception)
-        }
+
+        val serviceFromRemote = newsRepository.getServiceFromRemote()
+            if(serviceFromRemote is Result.Success){
+                emit(serviceFromRemote.data)
+            }
     }
 
 

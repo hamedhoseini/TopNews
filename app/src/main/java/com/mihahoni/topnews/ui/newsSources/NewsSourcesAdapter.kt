@@ -2,14 +2,17 @@ package com.mihahoni.topnews.ui.newsSources
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
+import com.mihahoni.topnews.BR
+import com.mihahoni.topnews.data.model.SourceItem
 import com.mihahoni.topnews.databinding.LayoutNewsSourceItemBinding
 
 class NewsSourcesAdapter : RecyclerView.Adapter<NewsSourcesAdapter.ViewHolder>() {
 
-    private var items: List<String> = ArrayList()
+    private var items: List<SourceItem?> = ArrayList()
 
-    fun submitItems(data: List<String>) {
+    fun submitItems(data: List<SourceItem?>) {
         items = data
         notifyDataSetChanged()
     }
@@ -37,9 +40,8 @@ class NewsSourcesAdapter : RecyclerView.Adapter<NewsSourcesAdapter.ViewHolder>()
         val binding: LayoutNewsSourceItemBinding
     ) :
         RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(item: String) {
-            binding.tvSourceName.text = item
+        fun bind(sourceItem: SourceItem?) {
+           binding.source=sourceItem
         }
     }
 }
