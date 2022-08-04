@@ -22,5 +22,7 @@ ext {
     nav_version = '2.5.1'
     hilt_android_version = '2.38.1'
     hilt_viewModel_version = '1.0.0-alpha03'
+    retrofit_version = '2.9.0'
+    okhttp_version = '5.0.0-alpha.10'
 
 }
