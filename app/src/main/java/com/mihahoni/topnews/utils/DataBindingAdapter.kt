@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.mihahoni.topnews.R
 import java.util.*
 
@@ -27,6 +28,14 @@ fun setCategory(textView: TextView, category: String, country: String) {
     textView.text = textViewString
 }
 
+@BindingAdapter("imageUrl")
+fun loadImage(imageView: ImageView, url: String) {
+    Glide.with(imageView)
+        .load(url)
+        .transform(RoundedCorners(32))
+        .placeholder(imageView.context.resources.getDrawable(R.drawable.ic_default_image))
+        .into(imageView)}
+
 @BindingAdapter("sourceUrl")
 fun loadSourceImage(imageView: ImageView, sourceUrl: String?) {
     var sourceUrl = sourceUrl
@@ -35,6 +44,7 @@ fun loadSourceImage(imageView: ImageView, sourceUrl: String?) {
     sourceUrl = String.format(iconUrl, Uri.parse(sourceUrl).authority)
     Glide.with(imageView)
         .load(sourceUrl)
+        .transform(RoundedCorners(32))
         .placeholder(context.resources.getDrawable(R.drawable.ic_default_image))
         .into(imageView)
 }

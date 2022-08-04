@@ -1,14 +1,10 @@
 package com.mihahoni.topnews.ui.newsSources
 
-import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mihahoni.topnews.R
+import com.mihahoni.topnews.data.model.SourceItem
 import com.mihahoni.topnews.databinding.FragmentNewsSourcesBinding
 import com.mihahoni.topnews.ui.base.BaseFragment
 import com.mihahoni.topnews.utils.MarginItemDecoration
@@ -30,11 +26,24 @@ class NewsSourcesFragment : BaseFragment<FragmentNewsSourcesBinding>() {
             addItemDecoration(MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_16dp)))
             adapter = sourcesAdapter
         }
+        sourcesAdapter.setOnSourceClickListener(object : NewsSourcesAdapter.SourceAdapterListener {
+            override fun onNewsSourceClicked(source: SourceItem?) {
+                source?.let {
+                    findNavController().navigate(
+                        NewsSourcesFragmentDirections.actionNewsSourcesFragmentToNewsListFragment(
+                            source.id
+                        )
+                    )
+                }
+            }
+
+        })
     }
+
     override fun observeViewModel() {
 
         newsSourcesViewModel.getNewsSources().observe(viewLifecycleOwner) {
-        sourcesAdapter.submitItems(it.sourcesList)
+            sourcesAdapter.submitItems(it.sourcesList)
         }
     }
 

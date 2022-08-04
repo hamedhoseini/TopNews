@@ -9,10 +9,19 @@
         android:id="@+id/newsSourcesFragment"
         android:name="com.mihahoni.topnews.ui.newsSources.NewsSourcesFragment"
         android:label="fragment_news_sources"
-        tools:layout="@layout/fragment_news_sources" />
+        tools:layout="@layout/fragment_news_sources" >
+        <action
+            android:id="@+id/action_newsSourcesFragment_to_newsListFragment"
+            app:destination="@id/newsListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/newsListFragment"
         android:name="com.mihahoni.topnews.ui.newsList.NewsListFragment"
         android:label="fragment_news_list"
-        tools:layout="@layout/fragment_news_list" />
+        tools:layout="@layout/fragment_news_list" >
+
+        <argument
+            android:name="sourceId"
+            app:argType="string" />
+    </fragment>
 </navigation>

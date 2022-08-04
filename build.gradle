@@ -2,6 +2,7 @@
 buildscript {
     dependencies {
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.38.1'
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.5.1"
 
     }
 }
@@ -20,6 +21,7 @@ ext {
     paging_version = '3.1.1'
     apollo_version = '3.3.0'
     nav_version = '2.5.1'
+    arc_nav_version = "1.0.0"
     hilt_android_version = '2.38.1'
     hilt_viewModel_version = '1.0.0-alpha03'
     retrofit_version = '2.9.0'
