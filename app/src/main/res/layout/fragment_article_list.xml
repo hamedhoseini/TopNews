@@ -3,15 +3,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="isLoading"
+            type="boolean" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.newsList.ArticleListFragment">
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:progress="35"
+            app:indicatorColor="@color/color_primary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:trackColor="@color/gray"
+            app:visibleOrGone="@{isLoading}" />
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycleViewNews"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:visibleOrGone="@{!isLoading}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -2,6 +2,7 @@ package com.mihahoni.topnews.utils
 
 import android.net.Uri
 import android.text.TextUtils
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -47,4 +48,8 @@ fun loadSourceImage(imageView: ImageView, sourceUrl: String?) {
         .transform(RoundedCorners(32))
         .placeholder(context.resources.getDrawable(R.drawable.ic_default_image))
         .into(imageView)
+}
+@BindingAdapter(value = ["visibleOrGone"])
+fun layoutVisibility(view: View, visible: Boolean) {
+    view.visibility = if (visible) View.VISIBLE else View.GONE
 }

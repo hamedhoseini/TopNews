@@ -4,6 +4,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mihahoni.topnews.R
+import com.mihahoni.topnews.data.Result
 import com.mihahoni.topnews.databinding.FragmentArticleListBinding
 import com.mihahoni.topnews.ui.base.BaseFragment
 import com.mihahoni.topnews.utils.MarginItemDecoration
@@ -20,9 +21,19 @@ class ArticleListFragment : BaseFragment<FragmentArticleListBinding>() {
     override fun viewLayoutId(): Int = R.layout.fragment_article_list
 
     override fun observeViewModel() {
-        articleViewModel.getArticleBySourceId(sourceId).observe(viewLifecycleOwner) {
-            articleAdapter.submitItems(it)
-        }
+        articleViewModel.getArticleBySourceId(sourceId)
+            .observe(viewLifecycleOwner) { articlesResponse ->
+                when (articlesResponse) {
+                    is Result.Loading -> getViewDataBinding().isLoading = true
+                    is Result.Success -> {
+                        getViewDataBinding().isLoading = false
+                        articleAdapter.submitItems(articlesResponse.data)
+                    }
+                    is Result.Error -> getViewDataBinding().isLoading = true
+
+                }
+
+            }
     }
 
     override fun initViews() {

@@ -1,9 +1,11 @@
 package com.mihahoni.topnews.ui.newsSources
 
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mihahoni.topnews.R
+import com.mihahoni.topnews.data.Result
 import com.mihahoni.topnews.data.model.SourceItem
 import com.mihahoni.topnews.databinding.FragmentNewsSourcesBinding
 import com.mihahoni.topnews.ui.base.BaseFragment
@@ -41,10 +43,16 @@ class NewsSourcesFragment : BaseFragment<FragmentNewsSourcesBinding>() {
     }
 
     override fun observeViewModel() {
+        newsSourcesViewModel.getNewsSources().observe(viewLifecycleOwner) { newsSourceResponse ->
+            when (newsSourceResponse) {
+                is Result.Loading -> getViewDataBinding().isLoading = true
+                is Result.Success -> {
+                    getViewDataBinding().isLoading = false
+                    newsSourceResponse.let { sourcesAdapter.submitItems(newsSourceResponse.data) }
+                }
+                is Result.Error -> getViewDataBinding().isLoading = true
 
-        newsSourcesViewModel.getNewsSources().observe(viewLifecycleOwner) {
-            it?.let { sourcesAdapter.submitItems(it) }
-
+            }
         }
     }
 

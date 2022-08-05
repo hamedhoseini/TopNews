@@ -12,14 +12,12 @@ import javax.inject.Inject
 @HiltViewModel
 class NewsSourcesViewModel @Inject constructor(
     private val newsRepository: NewsRepository
-): ViewModel()  {
+) : ViewModel() {
 
-    fun getNewsSources() = liveData(Dispatchers.IO){
-
+    fun getNewsSources() = liveData(Dispatchers.IO) {
+        emit(Result.Loading)
         val serviceFromRemote = newsRepository.getSources()
-            if(serviceFromRemote is Result.Success){
-                emit(serviceFromRemote.data)
-            }
+        emit(serviceFromRemote)
     }
 
 

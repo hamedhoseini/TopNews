@@ -15,10 +15,8 @@ class ArticleViewModel @Inject constructor(
 ) : ViewModel() {
 
     fun getArticleBySourceId(sourceId: String) = liveData(Dispatchers.IO) {
-
+        emit(Result.Loading)
         val serviceFromRemote = newsRepository.getArticleBySourceId(sourceId)
-        if (serviceFromRemote is Result.Success) {
-            emit(serviceFromRemote.data)
-        }
+        emit(serviceFromRemote)
     }
 }
