@@ -29,29 +29,29 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/imageViewNews"
+                    android:id="@+id/imageViewArticle"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginBottom="@dimen/margin_8dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_default_image"
-                    app:imageUrl="@{article.imageUrl}"
-                    app:layout_constraintBottom_toTopOf="@+id/textViewNewsSource"
+                    app:imageUrl="@{article.urlToImage}"
+                    app:layout_constraintBottom_toTopOf="@+id/textViewArticleSource"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_weight="5.5" />
 
                 <TextView
-                    android:id="@+id/textViewNewsSource"
+                    android:id="@+id/textViewArticleSource"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:text="@{article.source.name}"
                     android:textColor="@color/text_color_black"
-                    app:layout_constraintBottom_toTopOf="@+id/textViewNewsTitle"
-                    app:layout_constraintTop_toBottomOf="@+id/imageViewNews"
+                    app:layout_constraintBottom_toTopOf="@+id/textViewArticleTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/imageViewArticle"
                     app:layout_constraintVertical_weight="1" />
 
                 <TextView
-                    android:id="@+id/textViewNewsTitle"
+                    android:id="@+id/textViewArticleTitle"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:text="@{article.title}"
@@ -60,31 +60,31 @@
                     android:lines="2"
                     android:ellipsize="end"
                     android:textSize="@dimen/textSizeBig"
-                    app:layout_constraintBottom_toTopOf="@+id/textViewNewsDescription"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewNewsSource"
+                    app:layout_constraintBottom_toTopOf="@+id/textViewArticleDescription"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewArticleSource"
                     app:layout_constraintVertical_weight="1.5" />
 
 
                 <TextView
-                    android:id="@+id/textViewNewsDescription"
+                    android:id="@+id/textViewArticleDescription"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:text="@{article.description}"
                     android:ellipsize="end"
                     android:lines="3"
                     android:textColor="@color/text_color_gray"
-                    app:layout_constraintBottom_toTopOf="@+id/textViewNewsDate"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewNewsTitle"
+                    app:layout_constraintBottom_toTopOf="@+id/textViewArticleDate"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewArticleTitle"
                     app:layout_constraintVertical_weight="2" />
 
                 <TextView
-                    android:id="@+id/textViewNewsDate"
+                    android:id="@+id/textViewArticleDate"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:text="@{article.publishedAt}"
                     android:textColor="@color/text_color_black"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewNewsDescription"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewArticleDescription"
                     app:layout_constraintVertical_weight="1" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

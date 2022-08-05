@@ -1,10 +1,10 @@
 package com.mihahoni.topnews.data.repository
 
 import com.mihahoni.topnews.data.Result
-import com.mihahoni.topnews.data.model.NewsResponse
-import com.mihahoni.topnews.data.model.NewsSourceResponse
+import com.mihahoni.topnews.data.model.ArticleItem
+import com.mihahoni.topnews.data.model.SourceItem
 
 interface NewsRepository {
-   suspend fun getServiceFromRemote(): Result<NewsSourceResponse>
-   suspend fun getNewsBySourceId(sourceId:String): Result<NewsResponse>
+   suspend fun getSources(): Result<List<SourceItem>>
+   suspend fun getArticleBySourceId(sourceId:String): Result<List<ArticleItem>>
 }

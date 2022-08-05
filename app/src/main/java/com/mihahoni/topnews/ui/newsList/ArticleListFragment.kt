@@ -4,24 +4,24 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mihahoni.topnews.R
-import com.mihahoni.topnews.databinding.FragmentNewsListBinding
+import com.mihahoni.topnews.databinding.FragmentArticleListBinding
 import com.mihahoni.topnews.ui.base.BaseFragment
 import com.mihahoni.topnews.utils.MarginItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NewsListFragment : BaseFragment<FragmentNewsListBinding>() {
+class ArticleListFragment : BaseFragment<FragmentArticleListBinding>() {
 
     private lateinit var sourceId: String
-    private lateinit var newsAdapter: NewsAdapter
-    private val newsViewModel by viewModels<NewsViewModel>()
-    private val args: NewsListFragmentArgs by navArgs()
+    private lateinit var articleAdapter: ArticleAdapter
+    private val articleViewModel by viewModels<ArticleViewModel>()
+    private val args: ArticleListFragmentArgs by navArgs()
 
-    override fun viewLayoutId(): Int = R.layout.fragment_news_list
+    override fun viewLayoutId(): Int = R.layout.fragment_article_list
 
     override fun observeViewModel() {
-        newsViewModel.getNewsBySourceId(sourceId).observe(viewLifecycleOwner) {
-            newsAdapter.submitItems(it.articleList)
+        articleViewModel.getArticleBySourceId(sourceId).observe(viewLifecycleOwner) {
+            articleAdapter.submitItems(it)
         }
     }
 
@@ -29,12 +29,12 @@ class NewsListFragment : BaseFragment<FragmentNewsListBinding>() {
         args.let {
             sourceId = it.sourceId
         }
-        newsAdapter = NewsAdapter()
+        articleAdapter = ArticleAdapter()
         getViewDataBinding().recycleViewNews.apply {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             addItemDecoration(MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_16dp)))
-            adapter = newsAdapter
+            adapter = articleAdapter
         }
     }
 

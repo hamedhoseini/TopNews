@@ -1,18 +1,24 @@
 package com.mihahoni.topnews.di
 
+import com.mihahoni.topnews.data.dataSource.BaseDataSource
 import com.mihahoni.topnews.data.repository.NewsRepository
 import com.mihahoni.topnews.data.repository.NewsRepositoryImp
-import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class NewsRepositoryModule {
+object NewsRepositoryModule {
 
-    @Binds
-    abstract fun bindAnalyticsService(
-        newsRepositoryImp: NewsRepositoryImp
-    ): NewsRepository
+    @Singleton
+    @Provides
+    fun provideNewsRepository(
+        @RemoteDataSourceQualifier remoteDataSource: BaseDataSource,
+        @LocalDataSourceQualifier localDataSource: BaseDataSource
+    ): NewsRepository {
+        return NewsRepositoryImp(remoteDataSource, localDataSource)
+    }
 }

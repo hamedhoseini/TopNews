@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mihahoni.topnews.data.model.ArticleItem
-import com.mihahoni.topnews.databinding.LayoutNewsItemBinding
+import com.mihahoni.topnews.databinding.LayoutArticleItemBinding
 
-class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
+class ArticleAdapter : RecyclerView.Adapter<ArticleAdapter.ViewHolder>() {
 
     private lateinit var listener: NewsAdapterListener
     private var items: List<ArticleItem?> = ArrayList()
@@ -22,7 +22,7 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = LayoutNewsItemBinding.inflate(inflater)
+        val binding = LayoutArticleItemBinding.inflate(inflater)
         return ViewHolder(binding)
     }
 
@@ -40,7 +40,7 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
     override fun getItemCount(): Int = items.size
 
     inner class ViewHolder(
-        val binding: LayoutNewsItemBinding
+        val binding: LayoutArticleItemBinding
     ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(articleItem: ArticleItem?) {

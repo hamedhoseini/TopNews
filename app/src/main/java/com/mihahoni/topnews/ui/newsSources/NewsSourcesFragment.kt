@@ -43,7 +43,8 @@ class NewsSourcesFragment : BaseFragment<FragmentNewsSourcesBinding>() {
     override fun observeViewModel() {
 
         newsSourcesViewModel.getNewsSources().observe(viewLifecycleOwner) {
-            sourcesAdapter.submitItems(it.sourcesList)
+            it?.let { sourcesAdapter.submitItems(it) }
+
         }
     }
 

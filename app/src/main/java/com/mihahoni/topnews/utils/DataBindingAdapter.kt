@@ -29,7 +29,7 @@ fun setCategory(textView: TextView, category: String, country: String) {
 }
 
 @BindingAdapter("imageUrl")
-fun loadImage(imageView: ImageView, url: String) {
+fun loadImage(imageView: ImageView, url: String?) {
     Glide.with(imageView)
         .load(url)
         .transform(RoundedCorners(32))

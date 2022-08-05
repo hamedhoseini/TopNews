@@ -1,6 +1,6 @@
 package com.mihahoni.topnews.data.service
 
-import com.mihahoni.topnews.data.model.NewsResponse
+import com.mihahoni.topnews.data.model.ArticleResponse
 import com.mihahoni.topnews.data.model.NewsSourceResponse
 import com.mihahoni.topnews.utils.Constants
 import retrofit2.http.GET
@@ -15,5 +15,5 @@ interface NewsService {
 
     @Headers("X-Api-Key:" + Constants.API_KEY)
     @GET("/v2/top-headlines")
-    suspend fun getNewsBySourceId(@Query("sources") sourceId: String): NewsResponse
+    suspend fun getNewsBySourceId(@Query("sources") sourceId: String): ArticleResponse
 }

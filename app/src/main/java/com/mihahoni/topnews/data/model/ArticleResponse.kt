@@ -2,7 +2,7 @@ package com.mihahoni.topnews.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class NewsResponse(
+data class ArticleResponse(
     @SerializedName("status")
     val status: String,
     @SerializedName("totalResults")

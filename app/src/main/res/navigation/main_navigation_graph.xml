@@ -16,9 +16,9 @@
     </fragment>
     <fragment
         android:id="@+id/newsListFragment"
-        android:name="com.mihahoni.topnews.ui.newsList.NewsListFragment"
+        android:name="com.mihahoni.topnews.ui.newsList.ArticleListFragment"
         android:label="fragment_news_list"
-        tools:layout="@layout/fragment_news_list" >
+        tools:layout="@layout/fragment_article_list" >
 
         <argument
             android:name="sourceId"

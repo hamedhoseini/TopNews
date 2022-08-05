@@ -10,13 +10,13 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class NewsViewModel @Inject constructor(
+class ArticleViewModel @Inject constructor(
     private val newsRepository: NewsRepository
 ) : ViewModel() {
 
-    fun getNewsBySourceId(sourceId: String) = liveData(Dispatchers.IO) {
+    fun getArticleBySourceId(sourceId: String) = liveData(Dispatchers.IO) {
 
-        val serviceFromRemote = newsRepository.getNewsBySourceId(sourceId)
+        val serviceFromRemote = newsRepository.getArticleBySourceId(sourceId)
         if (serviceFromRemote is Result.Success) {
             emit(serviceFromRemote.data)
         }

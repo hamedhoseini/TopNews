@@ -26,5 +26,7 @@ ext {
     hilt_viewModel_version = '1.0.0-alpha03'
     retrofit_version = '2.9.0'
     okhttp_version = '5.0.0-alpha.10'
+    glide_version = '4.13.2'
+    room_version = '2.4.3'
 
 }

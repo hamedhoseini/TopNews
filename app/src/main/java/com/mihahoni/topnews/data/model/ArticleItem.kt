@@ -1,22 +1,27 @@
 package com.mihahoni.topnews.data.model
 
-import com.google.gson.annotations.SerializedName
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity(tableName = "articles")
 data class ArticleItem(
-    @SerializedName("author")
-    val author: String,
-    @SerializedName("title")
-    val title: String,
-    @SerializedName("description")
-    val description: String,
-    @SerializedName("url")
-    val url: String,
-    @SerializedName("published_at")
-    val publishedAt: String,
-    @SerializedName("urlToImage")
-    val imageUrl: String,
-    @SerializedName("content")
-    val content: String,
-    @SerializedName("source")
-    val source: SourceItem,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
+    @ColumnInfo(name = "author")
+    val author: String?,
+    @ColumnInfo(name = "title")
+    val title: String?,
+    @ColumnInfo(name = "description")
+    val description: String?,
+    @ColumnInfo(name = "url")
+    val url: String?,
+    @ColumnInfo(name = "published_at")
+    val publishedAt: String?,
+    @ColumnInfo(name = "urlToImage")
+    val urlToImage: String?,
+    @ColumnInfo(name = "content")
+    val content: String?,
+    @ColumnInfo(name = "source")
+    val source: SourceItem?,
 )

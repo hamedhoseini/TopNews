@@ -11,7 +11,7 @@ class NewsSourcesAdapter : RecyclerView.Adapter<NewsSourcesAdapter.ViewHolder>()
     private lateinit var listener: SourceAdapterListener
     private var items: List<SourceItem?> = ArrayList()
 
-    fun submitItems(data: List<SourceItem?>) {
+    fun submitItems(data: List<SourceItem>) {
         items = data
         notifyDataSetChanged()
     }
