@@ -1,11 +1,9 @@
 package com.mihahoni.topnews.ui.newsSources
 
-import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mihahoni.topnews.R
-import com.mihahoni.topnews.data.Result
 import com.mihahoni.topnews.data.model.SourceItem
 import com.mihahoni.topnews.databinding.FragmentNewsSourcesBinding
 import com.mihahoni.topnews.ui.base.BaseFragment
@@ -22,6 +20,7 @@ class NewsSourcesFragment : BaseFragment<FragmentNewsSourcesBinding>() {
 
 
     override fun initViews() {
+        requireActivity().title = resources.getString(R.string.top_news_sources);
         sourcesAdapter = NewsSourcesAdapter()
         getViewDataBinding().newsSourceRecycleView.apply {
             layoutManager =
@@ -34,7 +33,7 @@ class NewsSourcesFragment : BaseFragment<FragmentNewsSourcesBinding>() {
                 source?.let {
                     findNavController().navigate(
                         NewsSourcesFragmentDirections.actionNewsSourcesFragmentToNewsListFragment(
-                            source.id
+                            source
                         )
                     )
                 }

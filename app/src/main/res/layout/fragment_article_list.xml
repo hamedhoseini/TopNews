@@ -34,6 +34,8 @@
             android:id="@+id/recycleViewNews"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             app:visibleOrGone="@{!isLoading}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </androidx.constraintlayout.widget.ConstraintLayout>

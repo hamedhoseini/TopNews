@@ -8,7 +8,7 @@ import com.mihahoni.topnews.databinding.LayoutArticleItemBinding
 
 class ArticleAdapter : RecyclerView.Adapter<ArticleAdapter.ViewHolder>() {
 
-    private lateinit var listener: NewsAdapterListener
+    private lateinit var listener: ArticleAdapterListener
     private var items: List<ArticleItem?> = ArrayList()
 
     fun submitItems(data: List<ArticleItem?>) {
@@ -16,7 +16,7 @@ class ArticleAdapter : RecyclerView.Adapter<ArticleAdapter.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun setOnNewsClickListener(onSourceItemListener: NewsAdapterListener) {
+    fun setOnNewsClickListener(onSourceItemListener: ArticleAdapterListener) {
         listener = onSourceItemListener
     }
 
@@ -45,11 +45,11 @@ class ArticleAdapter : RecyclerView.Adapter<ArticleAdapter.ViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
         fun bind(articleItem: ArticleItem?) {
             binding.article = articleItem
-            itemView.setOnClickListener { listener.onNewsItemClicked(articleItem) }
+            itemView.setOnClickListener { listener.onArticleItemClicked(articleItem) }
         }
     }
 
-    interface NewsAdapterListener {
-        fun onNewsItemClicked(source: ArticleItem?)
+    interface ArticleAdapterListener {
+        fun onArticleItemClicked(articleItem: ArticleItem?)
     }
 }

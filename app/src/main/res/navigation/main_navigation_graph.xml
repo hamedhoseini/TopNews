@@ -21,7 +21,7 @@
         tools:layout="@layout/fragment_article_list" >
 
         <argument
-            android:name="sourceId"
-            app:argType="string" />
+            android:name="source"
+            app:argType="com.mihahoni.topnews.data.model.SourceItem" />
     </fragment>
 </navigation>

@@ -1,19 +1,24 @@
 package com.mihahoni.topnews.ui.newsList
 
+import android.content.Intent
+import android.net.Uri
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mihahoni.topnews.R
+import com.mihahoni.topnews.data.model.ArticleItem
+import com.mihahoni.topnews.data.model.SourceItem
 import com.mihahoni.topnews.databinding.FragmentArticleListBinding
 import com.mihahoni.topnews.ui.base.BaseFragment
 import com.mihahoni.topnews.utils.MarginItemDecoration
 import com.mihahoni.topnews.utils.StateHandler
 import dagger.hilt.android.AndroidEntryPoint
 
+
 @AndroidEntryPoint
 class ArticleListFragment : BaseFragment<FragmentArticleListBinding>() {
 
-    private lateinit var sourceId: String
+    private lateinit var articleSource: SourceItem
     private lateinit var articleAdapter: ArticleAdapter
     private val articleViewModel by viewModels<ArticleViewModel>()
     private val args: ArticleListFragmentArgs by navArgs()
@@ -37,8 +42,10 @@ class ArticleListFragment : BaseFragment<FragmentArticleListBinding>() {
 
     override fun initViews() {
         args.let {
-            sourceId = it.sourceId
+            articleSource = it.source
+            requireActivity().title = articleSource.name;
         }
+
         articleAdapter = ArticleAdapter()
         getViewDataBinding().recycleViewNews.apply {
             layoutManager =
@@ -46,7 +53,15 @@ class ArticleListFragment : BaseFragment<FragmentArticleListBinding>() {
             addItemDecoration(MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_16dp)))
             adapter = articleAdapter
         }
-        articleViewModel.getArticleBySourceId(sourceId)
+        articleViewModel.getArticleBySourceId(articleSource.id)
+
+        articleAdapter.setOnNewsClickListener(object : ArticleAdapter.ArticleAdapterListener {
+            override fun onArticleItemClicked(articleItem: ArticleItem?) {
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(articleItem?.url))
+                startActivity(browserIntent)
+            }
+
+        })
     }
 
 }
