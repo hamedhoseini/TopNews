@@ -10,6 +10,7 @@ import com.mihahoni.topnews.data.model.SourceItem
 import com.mihahoni.topnews.databinding.FragmentNewsSourcesBinding
 import com.mihahoni.topnews.ui.base.BaseFragment
 import com.mihahoni.topnews.utils.MarginItemDecoration
+import com.mihahoni.topnews.utils.StateHandler
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,15 +44,14 @@ class NewsSourcesFragment : BaseFragment<FragmentNewsSourcesBinding>() {
     }
 
     override fun observeViewModel() {
-        newsSourcesViewModel.getNewsSources().observe(viewLifecycleOwner) { newsSourceResponse ->
-            when (newsSourceResponse) {
-                is Result.Loading -> getViewDataBinding().isLoading = true
-                is Result.Success -> {
-                    getViewDataBinding().isLoading = false
-                    newsSourceResponse.let { sourcesAdapter.submitItems(newsSourceResponse.data) }
-                }
-                is Result.Error -> getViewDataBinding().isLoading = true
-
+        newsSourcesViewModel.newsSourcesList.observe(viewLifecycleOwner) { newsSourceResponse ->
+            newsSourceResponse.let { sourcesAdapter.submitItems(newsSourceResponse) }
+        }
+        newsSourcesViewModel.newsSourcesFetchingState.observe(viewLifecycleOwner) { newsSourceFetchingState ->
+            when (newsSourceFetchingState) {
+                is StateHandler.Loading -> getViewDataBinding().isLoading = true
+                is StateHandler.Success<*> -> getViewDataBinding().isLoading = false
+                is StateHandler.Failure -> getViewDataBinding().isLoading = true
             }
         }
     }

@@ -1,9 +1,15 @@
 package com.mihahoni.topnews.data.repository
 
-import com.mihahoni.topnews.data.Result
+import android.annotation.SuppressLint
+import android.util.Log
 import com.mihahoni.topnews.data.dataSource.BaseDataSource
 import com.mihahoni.topnews.data.model.ArticleItem
 import com.mihahoni.topnews.data.model.SourceItem
+import io.reactivex.Completable
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
 import java.util.*
 import javax.inject.Inject
 
@@ -11,59 +17,81 @@ class NewsRepositoryImp @Inject constructor(
     private val remoteDataSource: BaseDataSource,
     private val localDataSource: BaseDataSource,
 ) : NewsRepository {
-    override suspend fun getSources(): Result<List<SourceItem>> {
 
-        try {
-            updateSourceFromRemoteDataSource()
-        } catch (ex: Exception) {
-            return Result.Error(ex)
-        }
-        return localDataSource.getSources()
+
+    override fun getSources(): Observable<List<SourceItem>> {
+        updateSourceFromRemoteDataSource()
+
+        return localDataSource.getSources().subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override suspend fun getArticleBySourceId(sourceId: String): Result<List<ArticleItem>> {
-        if (shouldFetchArticleFromRemote(sourceId)) {
-            try {
-                updateArticlesFromRemoteDataSource(sourceId)
-                updateSourceLastUpdateTime(sourceId)
-            } catch (ex: Exception) {
-                return Result.Error(ex)
+    @SuppressLint("CheckResult")
+    override fun getArticleBySourceId(sourceId: String): Observable<List<ArticleItem>> {
+
+        checkFetchArticleFromRemote(sourceId)
+        return Observable.concatArrayEager(
+            localDataSource.getNewsBySource(sourceId).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io()),
+            updateArticlesFromRemoteDataSource(sourceId)
+
+        )
+    }
+
+    private fun updateSourceLastUpdateTime(sourceId: String): Completable {
+        return Completable.fromAction {
+            localDataSource.setSourceLastUpdateTime(sourceId, Date())
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+    }
+
+    @SuppressLint("CheckResult")
+    private fun updateSourceFromRemoteDataSource() {
+        remoteDataSource.getSources().subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe {
+                insertNewsSourcesToLocal(it).subscribe()
             }
-        }
-        return localDataSource.getNewsBySource(sourceId)
     }
 
-    private suspend fun updateSourceLastUpdateTime(sourceId: String) {
-        localDataSource.setSourceLastUpdateTime(sourceId, Date())
+    private fun insertNewsSourcesToLocal(sourcesList: List<SourceItem>): Completable {
+        return Completable.fromAction {
+            localDataSource.insertSources(sourcesList)
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
     }
 
-    private suspend fun updateSourceFromRemoteDataSource() {
-        val remoteSource = remoteDataSource.getSources()
-
-        if (remoteSource is Result.Success) {
-            localDataSource.insertSources(remoteSource.data)
-        }
-//        else if (remoteSource is Result.Error) {
-//            throw remoteSource.exception
-//        }
+    @SuppressLint("CheckResult")
+    private fun updateArticlesFromRemoteDataSource(sourceId: String): Observable<List<ArticleItem>> {
+        return remoteDataSource.getNewsBySource(sourceId).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).doOnNext {
+                insertArticlesToLocal(it).subscribe()
+                updateSourceLastUpdateTime(sourceId).subscribe()
+            }
     }
 
-    private suspend fun updateArticlesFromRemoteDataSource(sourceId: String) {
-        val remoteArticles = remoteDataSource.getNewsBySource(sourceId)
-
-        if (remoteArticles is Result.Success) {
-            localDataSource.insertArticles(remoteArticles.data)
-        }
-//        else if (remoteSource is Result.Error) {
-//            throw remoteSource.exception
-//        }
+    private fun insertArticlesToLocal(articleList: List<ArticleItem>): Completable {
+        return Completable.fromAction {
+            localDataSource.insertArticles(articleList)
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
     }
 
-    private suspend fun shouldFetchArticleFromRemote(sourceId: String): Boolean {
-        val sourceLastUpdateTime = localDataSource.getSourceLastUpdateTime(sourceId)
-        val last15Minute = Date(System.currentTimeMillis() - (15 * 60 * 1000))
-
-        return sourceLastUpdateTime == null || sourceLastUpdateTime.before(last15Minute)
+    private fun checkFetchArticleFromRemote(sourceId: String) {
+        localDataSource.getSourceLastUpdateTime(sourceId)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe({
+                val last15Minute = Date(System.currentTimeMillis() - (15 * 60 * 1000))
+                if (it == null || it.before(last15Minute)) {
+                    updateArticlesFromRemoteDataSource(sourceId)
+                }
+            }, {
+                updateArticlesFromRemoteDataSource(sourceId)
+            })
     }
 
 }

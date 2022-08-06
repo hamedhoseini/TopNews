@@ -67,6 +67,8 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttp_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofit_version"
+
 
     //Glide
     implementation "com.github.bumptech.glide:glide:$rootProject.glide_version"
@@ -76,7 +78,13 @@ dependencies {
     implementation "androidx.room:room-runtime:$rootProject.room_version"
     annotationProcessor "androidx.room:room-compiler:$rootProject.room_version"
     implementation "androidx.room:room-ktx:$rootProject.room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
     kapt "androidx.room:room-compiler:$rootProject.room_version"
+
+    //RXJava
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxjava_version"
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjava_version"
+
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

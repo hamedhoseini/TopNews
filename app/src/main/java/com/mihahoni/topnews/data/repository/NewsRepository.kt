@@ -1,10 +1,10 @@
 package com.mihahoni.topnews.data.repository
 
-import com.mihahoni.topnews.data.Result
 import com.mihahoni.topnews.data.model.ArticleItem
 import com.mihahoni.topnews.data.model.SourceItem
+import io.reactivex.Observable
 
 interface NewsRepository {
-   suspend fun getSources(): Result<List<SourceItem>>
-   suspend fun getArticleBySourceId(sourceId:String): Result<List<ArticleItem>>
+    fun getSources(): Observable<List<SourceItem>>
+    fun getArticleBySourceId(sourceId: String): Observable<List<ArticleItem>>
 }

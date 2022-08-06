@@ -28,5 +28,6 @@ ext {
     okhttp_version = '5.0.0-alpha.10'
     glide_version = '4.13.2'
     room_version = '2.4.3'
+    rxjava_version = '2.1.1'
 
 }

@@ -1,45 +1,40 @@
 package com.mihahoni.topnews.data.dataSource
 
-import com.mihahoni.topnews.data.Result
 import com.mihahoni.topnews.data.model.ArticleItem
 import com.mihahoni.topnews.data.model.SourceItem
 import com.mihahoni.topnews.data.service.NewsService
+import io.reactivex.Observable
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
 
 class RemoteDataSource @Inject constructor(private val newsService: NewsService) : BaseDataSource {
 
-    override suspend fun getNewsBySource(sourceId: String): Result<List<ArticleItem>> {
-        try {
-            return Result.Success(data = newsService.getNewsBySourceId(sourceId).articleList)
-
-        } catch (e: Exception) {
-            return Result.Error(exception = e)
-        }
+    override fun getNewsBySource(sourceId: String): Observable<List<ArticleItem>> {
+        return newsService.getNewsBySourceId(sourceId).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).map { it.articleList }
     }
 
-    override suspend fun insertArticles(articleList: List<ArticleItem>) {
+    override fun insertArticles(articleList: List<ArticleItem>) {
 
     }
 
-    override suspend fun getSources(): Result<List<SourceItem>> {
-        try {
-            return Result.Success(data = newsService.getSources().sourcesList)
+    override fun getSources(): Observable<List<SourceItem>> {
 
-        } catch (e: Exception) {
-            return Result.Error(exception = e)
-        }
-    }
-
-    override suspend fun insertSources(sourcesList: List<SourceItem>) {
+        return newsService.getSources().subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).map { it.sourcesList }
 
     }
 
-    override suspend fun getSourceLastUpdateTime(sourceId: String): Date? {
-        return Date()
+    override fun insertSources(sourcesList: List<SourceItem>) {}
+
+    override fun getSourceLastUpdateTime(sourceId: String): Single<Date?> {
+        return Single.never()
     }
 
-    override suspend fun setSourceLastUpdateTime(sourceId: String, date: Date) {
+    override fun setSourceLastUpdateTime(sourceId: String, date: Date) {
 
     }
 }

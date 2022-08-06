@@ -1,16 +1,17 @@
 package com.mihahoni.topnews.data.dataSource
 
-import com.mihahoni.topnews.data.Result
 import com.mihahoni.topnews.data.model.ArticleItem
 import com.mihahoni.topnews.data.model.SourceItem
+import io.reactivex.Observable
+import io.reactivex.Single
 import java.util.*
 
 interface BaseDataSource {
 
-    suspend fun getSources(): Result<List<SourceItem>>
-    suspend fun insertSources(sourcesList: List<SourceItem>)
-    suspend fun getSourceLastUpdateTime(sourceId: String): Date?
-    suspend fun setSourceLastUpdateTime(sourceId: String, date: Date)
-    suspend fun getNewsBySource(sourceId: String): Result<List<ArticleItem>>
-    suspend fun insertArticles(articleList: List<ArticleItem>)
+    fun getSources(): Observable<List<SourceItem>>
+    fun insertSources(sourcesList: List<SourceItem>)
+    fun getSourceLastUpdateTime(sourceId: String): Single<Date?>
+    fun setSourceLastUpdateTime(sourceId: String, date: Date)
+    fun getNewsBySource(sourceId: String): Observable<List<ArticleItem>>
+    fun insertArticles(articleList: List<ArticleItem>)
 }

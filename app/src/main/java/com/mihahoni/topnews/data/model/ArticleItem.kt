@@ -1,6 +1,7 @@
 package com.mihahoni.topnews.data.model
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -22,6 +23,6 @@ data class ArticleItem(
     val urlToImage: String?,
     @ColumnInfo(name = "content")
     val content: String?,
-    @ColumnInfo(name = "source")
+    @Embedded(prefix = "source_")
     val source: SourceItem?,
 )

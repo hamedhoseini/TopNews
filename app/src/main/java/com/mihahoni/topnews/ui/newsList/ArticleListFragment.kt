@@ -4,10 +4,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mihahoni.topnews.R
-import com.mihahoni.topnews.data.Result
 import com.mihahoni.topnews.databinding.FragmentArticleListBinding
 import com.mihahoni.topnews.ui.base.BaseFragment
 import com.mihahoni.topnews.utils.MarginItemDecoration
+import com.mihahoni.topnews.utils.StateHandler
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,19 +21,18 @@ class ArticleListFragment : BaseFragment<FragmentArticleListBinding>() {
     override fun viewLayoutId(): Int = R.layout.fragment_article_list
 
     override fun observeViewModel() {
-        articleViewModel.getArticleBySourceId(sourceId)
-            .observe(viewLifecycleOwner) { articlesResponse ->
-                when (articlesResponse) {
-                    is Result.Loading -> getViewDataBinding().isLoading = true
-                    is Result.Success -> {
-                        getViewDataBinding().isLoading = false
-                        articleAdapter.submitItems(articlesResponse.data)
-                    }
-                    is Result.Error -> getViewDataBinding().isLoading = true
-
-                }
-
+        articleViewModel.articleList.observe(viewLifecycleOwner) { articlesResponse ->
+            articlesResponse.let {
+                articleAdapter.submitItems(articlesResponse)
             }
+        }
+        articleViewModel.articleFetchingState.observe(viewLifecycleOwner) { newsSourceFetchingState ->
+            when (newsSourceFetchingState) {
+                is StateHandler.Loading -> getViewDataBinding().isLoading = true
+                is StateHandler.Success<*> -> getViewDataBinding().isLoading = false
+                is StateHandler.Failure -> getViewDataBinding().isLoading = true
+            }
+        }
     }
 
     override fun initViews() {
@@ -47,6 +46,7 @@ class ArticleListFragment : BaseFragment<FragmentArticleListBinding>() {
             addItemDecoration(MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_16dp)))
             adapter = articleAdapter
         }
+        articleViewModel.getArticleBySourceId(sourceId)
     }
 
 }
